@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Riddle Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e1e1e;
+      color: white;
+      text-align: center;
+      padding: 40px;
+    }
+    #game-box {
+      background: #333;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: auto;
+    }
+    input, button {
+      padding: 10px;
+      margin-top: 10px;
+      width: 80%;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+    }
+    button {
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+    }
+    #hint {
+      margin-top: 10px;
+      color: #ffc107;
+    }
+    .download-link {
+      display: inline-block;
+      margin: 30px auto;
+      padding: 12px 20px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-box">
+    <h1>Riddle Game </h1>
+    <p id="riddle"></p>
+    <input type="text" id="answerInput" placeholder="Your answer..." />
+    <br />
+    <button onclick="submitAnswer()">Submit</button>
+    <p id="feedback"></p>
+    <p id="hint"></p>
+    <button onclick="nextRiddle()">Next Riddle</button>
+    <p id="score"></p>
+  </div>
+
+
+  <script>
+    const riddles = [
+      "I speak without a mouth and hear without ears. I have no body, but I come alive with the wind. What am I?",
+      "The more you take, the more you leave behind. What am I?",
+      "I'm not alive, but I can grow; I don't have lungs, but I need air; I don't have a mouth, but water kills me. What am I?"
+    ];
+
+    const answers = [
+      "an echo",
+      "footsteps",
+      "a fire"
+    ];
+
+    const hints = [
+      "Hint: This thing is known for its ability to reflect sound.",
+      "Hint: Think about what you leave behind when you walk.",
+      "Hint: It produces heat and light."
+    ];
+
+    let currentIndex = -1;
+    let score = 0;
+
+    function getRandomRiddle() {
+      currentIndex = Math.floor(Math.random() * riddles.length);
+      document.getElementById("riddle").textContent = riddles[currentIndex];
+      document.getElementById("answerInput").value = "";
+      document.getElementById("feedback").textContent = "";
+      document.getElementById("hint").textContent = "";
+    }
+
+    function submitAnswer() {
+      const userAnswer = document.getElementById("answerInput").value.trim().toLowerCase();
+      const correctAnswer = answers[currentIndex];
+
+      if (userAnswer === correctAnswer) {
+        document.getElementById("feedback").textContent = "Correct!";
+        score++;
+      } else {
+        const wantsHint = confirm("Wrong! Would you like a hint?");
+        if (wantsHint) {
+          document.getElementById("hint").textContent = hints[currentIndex];
+        }
+        document.getElementById("feedback").textContent = "Try again or click Next Riddle.";
+      }
+      document.getElementById("score").textContent = `Score: ${score}`;
+    }
+
+    function nextRiddle() {
+      getRandomRiddle();
+    }
+
+    // Start game on load
+    window.onload = getRandomRiddle;
+  </script>
+
+</body>
+</html>
